@@ -36,6 +36,10 @@ void Security_ProcessPacket(
     SecurityDecision *decision
 );
 
+ThreatLevel Threat_FromPacket(const uint8_t *packet);
+
+SecurityPolicy Policy_FromThreat(ThreatLevel threat);
+
 const char* Threat_ToString(ThreatLevel threat);
 
 const char* Policy_ToString(SecurityPolicy policy);

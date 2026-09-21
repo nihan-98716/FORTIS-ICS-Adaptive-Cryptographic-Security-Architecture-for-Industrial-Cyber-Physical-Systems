@@ -272,16 +272,27 @@ static void ProcessVerifyFrame(char *frame)
     {
         decision.authenticated = 1;
 
-        decision.threat = THREAT_LOW;
+        /*
+         * Authenticated packets are evaluated for
+         * the requested security test condition.
+         *
+         * The Blue Pill makes the actual
+         * threat → policy decision.
+         */
+        decision.threat =
+            Threat_FromPacket((const uint8_t *)packet);
 
-        decision.policy = POLICY_NORMAL;
+        decision.policy =
+            Policy_FromThreat(decision.threat);
     }
     else
     {
+        /*
+         * HMAC failure always overrides everything
+         * and immediately becomes CRITICAL.
+         */
         decision.authenticated = 0;
-
         decision.threat = THREAT_CRITICAL;
-
         decision.policy = POLICY_PARANOID;
     }
 

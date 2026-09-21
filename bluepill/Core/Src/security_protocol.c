@@ -47,6 +47,58 @@ const char* Policy_ToString(SecurityPolicy policy)
     }
 }
 
+ThreatLevel Threat_FromPacket(const uint8_t *packet)
+{
+    const char *marker =
+        strstr((const char *)packet, "THREAT_TEST=");
+
+    if (marker == NULL)
+    {
+        return THREAT_LOW;
+    }
+
+    marker += strlen("THREAT_TEST=");
+
+    if (strncmp(marker, "MEDIUM", 6) == 0)
+    {
+        return THREAT_MEDIUM;
+    }
+
+    if (strncmp(marker, "HIGH", 4) == 0)
+    {
+        return THREAT_HIGH;
+    }
+
+    if (strncmp(marker, "CRITICAL", 8) == 0)
+    {
+        return THREAT_CRITICAL;
+    }
+
+    return THREAT_LOW;
+}
+
+
+SecurityPolicy Policy_FromThreat(ThreatLevel threat)
+{
+    switch (threat)
+    {
+        case THREAT_LOW:
+            return POLICY_LIGHTWEIGHT;
+
+        case THREAT_MEDIUM:
+            return POLICY_NORMAL;
+
+        case THREAT_HIGH:
+            return POLICY_ENHANCED;
+
+        case THREAT_CRITICAL:
+            return POLICY_PARANOID;
+
+        default:
+            return POLICY_PARANOID;
+    }
+}
+
 void Security_ProcessPacket(
     uint8_t *packet,
     uint8_t *expected_hmac,
