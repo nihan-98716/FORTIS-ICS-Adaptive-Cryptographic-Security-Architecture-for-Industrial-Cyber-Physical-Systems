@@ -1,0 +1,2 @@
+# FORTIS-ICS-Adaptive-Cryptographic-Security-Architecture-for-Industrial-Cyber-Physical-Systems
+FORTIS-ICS is an adaptive security architecture for Industrial Cyber-Physical Systems that authenticates real-time sensor telemetry using HMAC-SHA256, detects tampering through a dedicated security coprocessor, dynamically enforces security policies, and protects authorized data using AES encryption for secure transmission.
